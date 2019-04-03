@@ -1,6 +1,6 @@
 {
-  "name": "sort-route-addresses",
-  "version": "0.0.2",
+  "name": "sort-route-addresses-nodeps",
+  "version": "0.0.3",
   "description": "Sort Sails/Express-style route addresses by inclusivity",
   "main": "index.js",
   "scripts": {
@@ -10,8 +10,5 @@
   "license": "MIT",
   "devDependencies": {
     "mocha": "^3.1.2"
-  },
-  "dependencies": {
-    "lodash": "^3.10.1"
   }
 }

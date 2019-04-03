@@ -1,9 +1,9 @@
 /**
  * Module dependencies.
  */
-var _ = require('lodash');
 
-module.exports = function sortRouteAddresses (addresses, options) {
+
+module.exports = function sortRouteAddresses(addresses, options) {
 
   // Ensure options is an object.
   options = options || {};
@@ -157,7 +157,7 @@ module.exports = function sortRouteAddresses (addresses, options) {
   }
 
   // Sort the ranks.
-  var sortedRanks = _.keys(rankedAddresses).sort();
+  var sortedRanks = _keys(rankedAddresses).sort();
 
   // Get the final sorted list of addresses.
   var sortedAddresses = _.reduce(sortedRanks, function(memo, rank) {
@@ -174,7 +174,7 @@ module.exports = function sortRouteAddresses (addresses, options) {
 function parseAddress(address) {
   var path = address.toLowerCase();
   var verbExpr = /^(all|get|post|put|delete|trace|options|connect|patch|head)\s+/i;
-  var verbSpecified = _.last(address.match(verbExpr) || []) || '';
+  var verbSpecified = _last(address.match(verbExpr) || []) || '';
   verbSpecified = verbSpecified.toLowerCase();
 
   // If a verb was specified, eliminate the verb from the original string
@@ -186,5 +186,28 @@ function parseAddress(address) {
     verb: verbSpecified,
     path: path
   };
+}
 
+function _reduce(array, fn, initial, bind) {
+  var len = array.length, i = 0;
+  if (len == 0 && arguments.length == 1) return null;
+  var result = initial || array[i++];
+  for (; i < len; i++) result = fn.call(bind, result, array[i], i, array);
+  return result;
+},
+
+function _keys(object) {
+  var result = [];
+  for (var key in Object(object)) {
+    if (hasOwnProperty.call(object, key) && key != 'constructor') {
+      result.push(key);
+    }
+  }
+  return result
+}
+
+function _last(array) {
+  // https://github.com/lodash/lodash/blob/master/last.js
+  var length = array == null ? 0 : array.length;
+  return length ? array[length - 1] : undefined;
 }
