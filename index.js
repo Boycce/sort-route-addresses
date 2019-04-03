@@ -2,7 +2,6 @@
  * Module dependencies.
  */
 
-
 module.exports = function sortRouteAddresses(addresses, options) {
 
   // Ensure options is an object.
@@ -13,7 +12,7 @@ module.exports = function sortRouteAddresses(addresses, options) {
   var regExRoute = /^r\|(.*)\|(.*)$/;
 
   // First, find the # of components in the longest route path.
-  var maxComponents = _.reduce(addresses, function(memo, address) {
+  var maxComponents = _reduce(addresses, function(memo, address) {
 
     // Parse the path out of the address.
     var addressInfo = parseAddress(address);
@@ -46,7 +45,7 @@ module.exports = function sortRouteAddresses(addresses, options) {
   var lastRank = Array(maxComponents).fill(0).join('');
 
   // Now create a dictionary mapping ranks to addresses.
-  var rankedAddresses = _.reduce(addresses, function(memo, address) {
+  var rankedAddresses = _reduce(addresses, function(memo, address) {
 
     // Get the verb and path from the address.
     var addressInfo = parseAddress(address);
@@ -160,7 +159,7 @@ module.exports = function sortRouteAddresses(addresses, options) {
   var sortedRanks = _keys(rankedAddresses).sort();
 
   // Get the final sorted list of addresses.
-  var sortedAddresses = _.reduce(sortedRanks, function(memo, rank) {
+  var sortedAddresses = _reduce(sortedRanks, function(memo, rank) {
     memo = memo.concat(rankedAddresses[rank]);
     return memo;
 
@@ -188,13 +187,16 @@ function parseAddress(address) {
   };
 }
 
-function _reduce(array, fn, initial, bind) {
-  var len = array.length, i = 0;
-  if (len == 0 && arguments.length == 1) return null;
-  var result = initial || array[i++];
-  for (; i < len; i++) result = fn.call(bind, result, array[i], i, array);
-  return result;
-},
+function _reduce(array, fn, initial) {
+  var accumulator = (initial === undefined) ? undefined : initial;
+  for (var i = 0; i < array.length; i++) {
+    if (accumulator !== undefined)
+      accumulator = fn.call(undefined, accumulator, array[i], i, array);
+    else
+      accumulator = array[i];
+  }
+  return accumulator;
+}
 
 function _keys(object) {
   var result = [];
